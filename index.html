@@ -1398,6 +1398,45 @@
         </ul>
       </div>
     </div>
+    <div
+      style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,215,0,0.15); border-radius: 16px;">
+      <h3
+        style="text-align:center; font-family: 'Playfair Display', serif; color: #ffd700; font-size: 1.5rem; margin-bottom: 1.5rem;">
+        📊 Tour Stats (Verified by No One)</h3>
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 1.5rem; text-align: center;">
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">911T</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Porsche of Choice<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">(The car, not the speed limit)</span></div>
+        </div>
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">∞</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Guitar Solos Played<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">(Neighbors have filed complaints)</span></div>
+        </div>
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">0</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Cases Lost on Purpose<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">(Accidental ones are classified)</span></div>
+        </div>
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">4am</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Usual Bedtime<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">("I'll just read one more brief")</span></div>
+        </div>
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">100%</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Chance He Orders for You<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">(And you'll love it)</span></div>
+        </div>
+        <div style="padding: 1.2rem;">
+          <div style="font-size: 2.5rem; font-weight: 700; color: #ffd700;">1</div>
+          <div style="color: #ccc; font-size: 0.9rem; margin-top: 0.5rem;">Industry He Literally Built<br><span
+              style="font-size: 0.75rem; opacity: 0.6;">(Cannabis law — you're welcome, California)</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Photo Gallery -->
@@ -1663,58 +1702,34 @@
       bgMusic.volume = 0.25;
       bgMusic.loop = false;
 
-      // ---- TRACK LOADING ----
-      function loadAndPlay(idx) {
-        bgMusic.src = playlist[idx];
-        bgMusic.load();
-        // Wait for the audio to be ready, then play
-        bgMusic.oncanplay = function () {
-          bgMusic.oncanplay = null; // one-shot
-          var p = bgMusic.play();
-          if (p && p.then) {
-            p.then(function () {
-              isPlaying = true;
-              musicBtn.textContent = '\uD83D\uDD0A';
-            }).catch(function (err) {
-              console.log('Next track play failed, retrying...', err);
-              // Retry once after a short delay (helps on some Android browsers)
-              setTimeout(function () {
-                bgMusic.play().catch(function () { });
-              }, 300);
-            });
-          }
-        };
+      // ---- PRELOAD ALL TRACKS AS SEPARATE AUDIO OBJECTS ----
+      // This is the most reliable mobile approach: no src-swapping needed
+      var tracks = [];
+      for (var i = 0; i < playlist.length; i++) {
+        var a = new Audio(playlist[i]);
+        a.preload = 'auto';
+        a.volume = 0.25;
+        tracks.push(a);
       }
 
-      // ---- SONG ENDED → NEXT TRACK ----
-      // This fires even on mobile because audio session is already active
-      bgMusic.addEventListener('ended', function () {
-        currentTrack = (currentTrack + 1) % playlist.length;
-        console.log('Song ended. Next track:', currentTrack, playlist[currentTrack]);
-        loadAndPlay(currentTrack);
-      });
-
-      // Also use timeupdate as a fallback — some mobile browsers
-      // don't fire 'ended' reliably
-      bgMusic.addEventListener('timeupdate', function () {
-        if (bgMusic.duration && bgMusic.currentTime >= bgMusic.duration - 0.3 && !bgMusic._switching) {
-          bgMusic._switching = true;
-          // The ended event should fire, but if it doesn't within 2s, force it
-          setTimeout(function () {
-            if (bgMusic._switching) {
-              bgMusic._switching = false;
-              currentTrack = (currentTrack + 1) % playlist.length;
-              console.log('Fallback next track:', currentTrack);
-              loadAndPlay(currentTrack);
+      // Wire up ended event on EACH track to play the next one
+      for (var j = 0; j < tracks.length; j++) {
+        (function (idx) {
+          tracks[idx].addEventListener('ended', function () {
+            currentTrack = (idx + 1) % tracks.length;
+            console.log('Track ' + idx + ' ended, playing track ' + currentTrack);
+            var p = tracks[currentTrack].play();
+            if (p && p.then) {
+              p.then(function () {
+                isPlaying = true;
+                musicBtn.textContent = '\uD83D\uDD0A';
+              }).catch(function (err) {
+                console.log('Next track play failed:', err);
+              });
             }
-          }, 2000);
-        }
-      });
-
-      // Reset the switching guard when ended fires normally
-      bgMusic.addEventListener('ended', function () {
-        bgMusic._switching = false;
-      });
+          });
+        })(j);
+      }
 
       // ---- iOS AUDIO UNLOCK ----
       function unlockAudio() {
@@ -1731,13 +1746,38 @@
             if (ctx.state === 'suspended') ctx.resume();
           }
         } catch (e) { }
+        // Touch each Audio object to unlock them on iOS
+        for (var k = 0; k < tracks.length; k++) {
+          tracks[k].load();
+        }
         audioUnlocked = true;
+      }
+
+      // ---- PLAY / PAUSE helpers ----
+      function playCurrentTrack() {
+        var t = tracks[currentTrack];
+        var p = t.play();
+        if (p && p.then) {
+          p.then(function () {
+            isPlaying = true;
+            musicBtn.textContent = '\uD83D\uDD0A';
+          }).catch(function (err) {
+            console.log('Play failed:', err);
+          });
+        }
+      }
+
+      function pauseAllTracks() {
+        for (var m = 0; m < tracks.length; m++) {
+          tracks[m].pause();
+        }
       }
 
       // ---- START MUSIC ----
       function startMusic() {
         unlockAudio();
-        loadAndPlay(currentTrack);
+        pauseAllTracks();
+        playCurrentTrack();
       }
 
       function hidePrompt() {
@@ -1756,7 +1796,7 @@
         if (!isPlaying) {
           startMusic();
         } else {
-          bgMusic.pause();
+          pauseAllTracks();
           isPlaying = false;
           musicBtn.textContent = '\uD83D\uDD07';
         }
@@ -1782,9 +1822,7 @@
       document.addEventListener('click', onFirstTouch, true);
 
       // ---- DESKTOP AUTOPLAY ATTEMPT ----
-      bgMusic.src = playlist[currentTrack];
-      bgMusic.load();
-      var autoP = bgMusic.play();
+      var autoP = tracks[currentTrack].play();
       if (autoP && autoP.then) {
         autoP.then(function () {
           isPlaying = true;
