@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eric Shevin - The Case for Dating</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --secondary: #60a5fa;
+      --accent: #f97316;
+      --gold: #f59e0b;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --white: #ffffff;
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --glass: rgba(30, 41, 59, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--primary), var(--accent));
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      width: 0%;
+      z-index: 10001;
+      transition: width 0.1s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Work Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    /* Smoke Effect */
+    .smoke-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.3;
+    }
+
+    .smoke {
+      position: absolute;
+      bottom: -50px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: smokeFloat 15s infinite ease-in-out;
+    }
+
+    .smoke:nth-child(1) {
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .smoke:nth-child(2) {
+      left: 30%;
+      animation-delay: 3s;
+    }
+
+    .smoke:nth-child(3) {
+      left: 60%;
+      animation-delay: 6s;
+    }
+
+    .smoke:nth-child(4) {
+      left: 80%;
+      animation-delay: 9s;
+    }
+
+    @keyframes smokeFloat {
+
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: translateY(-50vh) scale(1.5);
+        opacity: 0.3;
+      }
+
+      90% {
+        opacity: 0;
+      }
+    }
+
+    /* Floating Weed Leaves */
+    .leaf-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .leaf {
+      position: absolute;
+      top: -100px;
+      width: 40px;
+      height: 40px;
+      -webkit-user-select: none;
+      user-select: none;
+      opacity: 0.4;
+      animation: fall linear infinite;
+      background-image: url('images/leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translate(0, -50px) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.6;
+      }
+
+      90% {
+        opacity: 0.6;
+      }
+
+      100% {
+        transform: translate(100px, 100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Porsche Animation */
+    .porsche-container {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100vw;
+      height: 100px;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .porsche,
+    .tesla {
+      position: absolute;
+      bottom: 0px;
+      left: -200px;
+      height: 80px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
+      pointer-events: auto;
+      cursor: help;
+    }
+
+    .porsche {
+      animation: drivePorsche 15s linear infinite;
+    }
+
+    .tesla {
+      animation: driveTesla 3s linear infinite;
+      animation-delay: 7.5s;
+      /* Appears between Porsche passes */
+    }
+
+    @keyframes drivePorsche {
+      0% {
+        transform: translateX(-200px);
+      }
+
+      100% {
+        transform: translateX(calc(100vw + 200px));
+      }
+    }
+
+    @keyframes driveTesla {
+      0% {
+        transform: translateX(-200px);
+      }
+
+      100% {
+        transform: translateX(calc(100vw + 200px));
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 2rem;
+      background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%);
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1200px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-image {
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border: 4px solid var(--gold);
+    }
+
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      right: -15px;
+      bottom: -15px;
+      background: linear-gradient(45deg, var(--gold), var(--primary));
+      border-radius: 30px;
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .hero-text .tagline {
+      font-size: 1.4rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-text p {
+      color: var(--white);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1.2rem 3rem;
+      background: var(--accent);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
+      background: #ea580c;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 6rem 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    /* The Case */
+    .the-case {
+      background: #0f172a;
+    }
+
+    .case-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .case-content p {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .case-content .verdict {
+      font-size: 1.8rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 2.5rem;
+      padding: 2.5rem;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 20px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-left: 6px solid var(--gold);
+      font-style: italic;
+    }
+
+    /* Stats Section */
+    .stats {
+      background: #1e293b;
+      padding: 4rem 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      text-align: center;
+      color: var(--white);
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* The Pre-Nup */
+    .pre-nup {
+      background: #1e293b;
+    }
+
+    .nup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .nup-column {
+      padding: 2.5rem;
+      border-radius: 15px;
+    }
+
+    .nup-column.yes {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 2px solid var(--cannabis-green);
+    }
+
+    .nup-column.no {
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(220, 38, 38, 0.05));
+      border: 2px solid #dc2626;
+    }
+
+    .nup-column h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .yes h3 {
+      color: var(--cannabis-green);
+    }
+
+    .no h3 {
+      color: #dc2626;
+    }
+
+    .nup-column ul {
+      list-style: none;
+    }
+
+    .nup-column li {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-size: 1rem;
+    }
+
+    .nup-column li:last-child {
+      border-bottom: none;
+    }
+
+    /* Photo Gallery */
+    .gallery {
+      background: #0f172a;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      height: 350px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 40px rgba(30, 58, 138, 0.3);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-item .overlay-text {
+      position: absolute;
+      bottom: -60px;
+      left: 0;
+      width: 100%;
+      background: rgba(30, 58, 138, 0.9);
+      color: var(--gold);
+      padding: 1rem;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: bottom 0.3s ease;
+      margin: 0;
+    }
+
+    .gallery-item:hover .overlay-text {
+      bottom: 0;
+    }
+
+    /* Application Form */
+    .application {
+      background: #0f172a;
+    }
+
+    .application .section-title {
+      color: var(--white);
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox-group input {
+      width: auto;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .submit-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .success-message {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--primary);
+      color: var(--white);
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      display: none;
+    }
+
+    .success-message h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .success-message p {
+      color: var(--text-muted);
+    }
+
+    /* Testimonials */
+    .testimonials {
+      background: #1e293b;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .testimonial-card {
+      background: #0f172a;
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-left: 4px solid var(--primary);
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: '"';
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: -10px;
+      left: 20px;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-author {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* FAQ Section */
+    .faq {
+      background: #0f172a;
+    }
+
+    .faq-item {
+      max-width: 800px;
+      margin: 0 auto 1.5rem auto;
+      background: #1e293b;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .faq-item:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .faq-question {
+      padding: 1.5rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+      font-size: 1.1rem;
+    }
+
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .faq-answer {
+      padding: 0 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      color: var(--text-muted);
+    }
+
+    .faq-item.active .faq-answer {
+      padding: 1.5rem;
+      max-height: 300px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(45deg);
+      color: var(--primary);
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    /* Interactive Objection Button */
+    #objection-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #ef4444;
+      /* Standard red */
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+      z-index: 100;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #objection-btn:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 15px 30px rgba(239, 68, 68, 0.5);
+    }
+
+    .objection-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      background: #ef4444;
+      color: white;
+      font-size: 4rem;
+      font-weight: 900;
+      padding: 2.5rem 5rem;
+      border-radius: 20px;
+      border: 8px solid white;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      text-align: center;
+    }
+
+    .objection-reason {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      color: white;
+      text-transform: none;
+      letter-spacing: normal;
+      font-family: 'Work Sans', sans-serif;
+    }
+
+    @keyframes popupReveal {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes popupFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+      opacity: 0.7;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    /* Reading Indicator */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--gold));
+      z-index: 10001;
+      width: 0%;
+      transition: width 0.15s ease-out;
+    }
+
+    /* Footer */
+    footer {
+      background: #0a1628;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 4px solid var(--gold);
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-image img {
+        max-width: 300px;
+      }
+
+      .form-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes gavel {
+
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(-15deg);
+      }
+
+      50% {
+        transform: rotate(15deg);
+      }
+
+      75% {
+        transform: rotate(-10deg);
+      }
+    }
+
+    .gavel-animation {
+      animation: gavel 0.5s ease-in-out;
+    }
+
+    #music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--bg-light);
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .leaf-1 {
+      left: 10%;
+      animation-duration: 8s;
+      animation-delay: 0s;
+    }
+
+    .leaf-2 {
+      left: 30%;
+      animation-duration: 12s;
+      animation-delay: 2s;
+      width: 50px;
+      height: 50px;
+    }
+
+    .leaf-3 {
+      left: 50%;
+      animation-duration: 10s;
+      animation-delay: 4s;
+    }
+
+    .leaf-4 {
+      left: 70%;
+      animation-duration: 9s;
+      animation-delay: 1s;
+      width: 30px;
+      height: 30px;
+    }
+
+    .leaf-5 {
+      left: 90%;
+      animation-duration: 11s;
+      animation-delay: 3s;
+      width: 60px;
+      height: 60px;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 450px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border: 4px solid var(--gold);
+    }
+
+    .gallery-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: -2rem;
+      margin-bottom: 2rem;
+    }
+
+    label[for="oath"] {
+      margin-bottom: 0;
+    }
+
+    .footer-disclaimer {
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="reading-progress"></div>
+
+  <!-- Floating Nav -->
+  <nav class="floating-nav">
+    <div class="nav-content">
+      <div class="nav-logo">ES</div>
+      <ul class="nav-links">
+        <li><a href="#the-case">The Setlist</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#application">Apply</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Smoke Effect -->
+  <div class="smoke-container">
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+  </div>
+
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="images/audio/Jo & Little Lion Sound - Fenix [Evidence Music].mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Background Music Controls -->
+  <button id="music-btn">
+    🔊
+  </button>
+
+  <!-- Floating Leaves -->
+  <div class="leaf-container">
+    <div class="leaf leaf-1"></div>
+    <div class="leaf leaf-2"></div>
+    <div class="leaf leaf-3"></div>
+    <div class="leaf leaf-4"></div>
+    <div class="leaf leaf-5"></div>
+  </div>
+
+  <!-- Fast Cars -->
+  <div class="porsche-container">
+    <img src="images/porsche_cutout.png" alt="Purple Porsche" class="porsche">
+    <img src="images/tesla.png" alt="Tesla 100D" class="tesla">
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" data-aos="fade-up">
+    <div class="hero-content">
+      <div class="hero-image">
+        <img src="images/Eric.jpg" alt="Eric Shevin" onerror="this.src='images/eric-shevin.jpg'">
+      </div>
+      <div class="hero-text">
+        <h1>Guilty... of Stealing Hearts</h1>
+        <p class="tagline">Objection! Your Honor, I'm Just Looking for a Co-Counsel in Love</p>
+        <p>After 30+ years of arguing with judges, I'm finally looking for someone to agree with. I'm Eric Shevin, Los
+          Angeles' premier cannabis attorney, and I'm ready to present Exhibit A: me. Warning: Side effects may include
+          spontaneous laughter and extreme sushi consumption.</p>
+        <a href="#application" class="cta-button">File a Motion for Romance (No Retainer Required)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Case -->
+  <section class="the-case" id="the-case" data-aos="fade-right">
+    <h2 class="section-title">The Setlist</h2>
+    <div class="case-content">
+      <p>I don't do boring. Whether I'm tearing up a guitar solo, navigating high-stakes cannabis legislation, or
+        hunting down the best omakase in the city, I go all in. I'm looking for a partner with the same relentless
+        energy.</p>
+      <p>I've structured deals and kept an entire industry out of handcuffs. But my real passion? The raw energy of a
+        live show, the hum of an amp, and the perfect night driving through the hills in a Porsche 911T. If you're
+        looking for a generic finance guy with a predictable weekend routine, swipe left.</p>
+      <p>I bring the heat, the intellect, and an undeniable edge. If you can match that frequency, we're going to make
+        some noise.</p>
+      <div class="verdict">
+        "Verdict: Bold, relentless, and completely immune to average."
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats" id="stats" data-aos="zoom-in">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">30+</div>
+        <div class="stat-label">Years Owning the Courtroom</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100s</div>
+        <div class="stat-label">Of Live Shows Attended</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Immaculate Purple Porsche</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">1</div>
+        <div class="stat-label">Membership only Mulholland Hills Country Club Access</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Chance I Know a Better Sushi Spot</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Pre-Nup -->
+  <section class="pre-nup" data-aos="fade-up">
+    <h2 class="section-title">The Rider (Tour Demands)</h2>
+    <div class="nup-grid">
+      <div class="nup-column yes">
+        <h3>VIP Access Granted</h3>
+        <ul>
+          <li>🎸 Live music junkie—festivals, intimate gigs, or me playing for you</li>
+          <li> Industry pioneer (I wrote the playbook on cannabis law)</li>
+          <li>⛳ Membership-only golfing at Mulholland Hills Country Club</li>
+          <li>🎯 Sharp, sarcastic, and deeply intellectually curious</li>
+          <li>⚡ Unapologetic ambition and drive</li>
+          <li>️ Random night drives in a 911T with a killer playlist</li>
+        </ul>
+      </div>
+      <div class="nup-column no">
+        <h3>Banned from the Backstage</h3>
+        <ul>
+          <li>🚫 People who think "going out" means a loud, basic club</li>
+          <li>🚫 Uninspiring conversation and surface-level small talk</li>
+          <li>🚫 Anyone intimidated by success</li>
+          <li>🚫 Bad taste in music (Non-negotiable)</li>
+          <li>🚫 Lack of passion or putting zero effort into life</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section class="gallery" id="gallery" data-aos="fade-up">
+    <h2 class="section-title">The Highlight Reel 📸</h2>
+    <h3 class="gallery-subtitle">(Receipts of a
+      Life Well Lived)</h3>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="images/golf_club.jpg" alt="Mulholland Hills Country Club">
+        <p class="overlay-text">The Back Nine at Mulholland Hills</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/Eric.jpg" alt="Eric with Dog">
+        <p class="overlay-text">The Co-Pilot</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/Screenshot_20250723_202537_Photos.jpg" alt="Eric in Court">
+        <p class="overlay-text">Closing Arguments</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/Screenshot_20251027_165927_Facebook.jpg" alt="Eric on Facebook">
+        <p class="overlay-text">Off Grid</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/IMG_20170916_185211.jpg" alt="Eric Relaxing">
+        <p class="overlay-text">Amped Up</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/FIL10151.JPG" alt="Eric Professional">
+        <p class="overlay-text">The Blueprint</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/DSC00022.JPG" alt="Eric Event">
+        <p class="overlay-text">Backstage Pass</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/20251108_181940.jpg" alt="Eric Out and About">
+        <p class="overlay-text">The Setup</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/20151231_205844.jpg" alt="Eric Throwback">
+        <p class="overlay-text">Front Row Status</p>
+      </div>
+      <div class="gallery-item">
+        <img src="images/eric-shevin.jpg" alt="Eric Shevin Sign">
+        <p class="overlay-text">The Name on the Door</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials" data-aos="fade-left">
+    <h2 class="section-title">Word on the Street 🎙️</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Eric doesn't just know the law, he rewrites it. He also has better taste in guitars
+          than anyone I know."</p>
+        <p class="testimonial-author">- Industry Insider</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"He pulls up in a purple Porsche, talks his way into the VIP section, and knows
+          exactly what to order before the waiter even asks."</p>
+        <p class="testimonial-author">- Unnamed Bartender</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Sharp mind, dangerous charm. If you can keep up with him, it's a hell of a ride."
+        </p>
+        <p class="testimonial-author">- An Intimidated Colleague</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" data-aos="fade-right">
+    <h2 class="section-title">The Fine Print ⚖️</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        So, what exactly do you do?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        I'm a heavyweight cannabis defense attorney. I keep the good guys out of trouble and make sure the industry
+        keeps moving forward. It's high-stakes, fast-paced, and never boring.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        What's the deal with the guitar?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Music is my release. Whether I'm at the front row of a gig or plugging into my amp at home, it's how I dial down
+        from the intensity of the courtroom.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">
+        What's your ideal night out?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Taking the Porsche through the canyons, hitting up a killer live show, and ending the night with top-tier sushi
+        and conversation that actually challenges me.
+      </div>
+    </div>
+  </section>
+
+  <!-- Application -->
+  <section class="application" id="application" data-aos="zoom-in">
+    <h2 class="section-title">Get on the List 📝</h2>
+    <div class="form-container">
+      <div class="success-message" id="successMessage">
+        <h3>We're listening.</h3>
+        <p>Your details are under review. If you have the right kind of edge, you'll hear from me.</p>
+      </div>
+      <form id="applicationForm" action="https://formspree.io/f/eric@shevinlaw.com" method="POST">
+        <div class="form-group">
+          <label for="name">Your Stage Name (Real Name)</label>
+          <input type="text" id="name" name="name" required placeholder="Who am I talking to?">
+        </div>
+        <div class="form-group">
+          <label for="age">Your Age</label>
+          <input type="number" id="age" name="age" required placeholder="How old are you?" min="18">
+        </div>
+        <div class="form-group">
+          <label for="instagram">Instagram Handle</label>
+          <input type="text" id="instagram" name="instagram" placeholder="@yourhandle">
+        </div>
+        <div class="form-group">
+          <label for="vibe">Your Energy</label>
+          <select id="vibe" name="vibe" required>
+            <option value="">Select your ruling vibe...</option>
+            <option value="music">Live Music Junkie</option>
+            <option value="creative">Creative Intellect</option>
+            <option value="ambitious">High-Powered & Ambitious</option>
+            <option value="fun">Rebel with a Cause</option>
+            <option value="mysterious">Mysterious Edge</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="defense">The Pitch</label>
+          <textarea id="defense" name="defense" required
+            placeholder="Tell me why you're the one who can keep up..."></textarea>
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="oath" name="oath" required>
+          <label for="oath">I verify that I have great taste in music and can tolerate a
+            fast-paced life.</label>
+        </div>
+        <button type="submit" class="submit-btn">🎸 Send It</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Eric Shevin, Esquire</p>
+    <p class="footer-disclaimer">Legal Disclaimer: This site is for entertainment purposes. You probably can't
+      actually handle this much fun. 🎙️</p>
+  </footer>
+
+  <!-- Interactive Elements -->
+  <button id="objection-btn">Objection!</button>
+  <div id="objection-popup" class="objection-popup">
+    OBJECTION!
+    <span id="objection-reason" class="objection-reason">Leading the witness... directly to dinner.</span>
+  </div>
+
+  <script>
+    const form = document.getElementById('applicationForm');
+    const successMessage = document.getElementById('successMessage');
+    const submitBtn = document.querySelector('.submit-btn');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Add gavel animation
+      submitBtn.classList.add('gavel-animation');
+
+      setTimeout(() => {
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+        successMessage.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+
+        // Close all
+        faqItems.forEach(faq => faq.classList.remove('active'));
+
+        // Open clicked if it wasn't already active
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Objection Button Logic
+    const objectionBtn = document.getElementById('objection-btn');
+    const objectionPopup = document.getElementById('objection-popup');
+    const objectionReason = document.getElementById('objection-reason');
+
+    const reasons = [
+      "Leading the witness... directly to dinner.",
+      "Argumentative! You are arguing against how charming I am.",
+      "Hearsay! Unless you heard it from me, it's just a rumor that I'm this great.",
+      "Irrelevant! Your ex is irrelevant to this proceeding.",
+      "Badgering the witness! Stop asking me how I keep my hair looking this good.",
+      "Assumes facts not in evidence! We don't know you're not my soulmate yet.",
+      "Sustained! The vibes are immaculate."
+    ];
+
+    objectionBtn.addEventListener('click', () => {
+      // Pick a random reason
+      const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+      objectionReason.textContent = randomReason;
+
+      // Show popup
+      objectionPopup.classList.remove('hide');
+      objectionPopup.classList.add('show');
+
+      // Trigger haptic feedback if available on mobile
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+      }
+
+      // Hide after 3 seconds
+      setTimeout(() => {
+        objectionPopup.classList.remove('show');
+        objectionPopup.classList.add('hide');
+      }, 3000);
+    });
+
+    // Background Music Logic
+    const musicBtn = document.getElementById('music-btn');
+    const bgMusic = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    // Set volume low
+    bgMusic.volume = 0.2;
+
+    const toggleMusic = () => {
+      if (isPlaying) {
+        bgMusic.pause();
+        musicBtn.textContent = '🔇';
+      } else {
+        bgMusic.play().then(() => {
+          musicBtn.textContent = '🔊';
+        }).catch(err => console.log('Audio error:', err));
+      }
+      isPlaying = !isPlaying;
+    };
+
+    musicBtn.addEventListener('click', toggleMusic);
+
+    // Attempt autoplay, and if the browser blocks it, wait for first interaction
+    window.addEventListener('DOMContentLoaded', () => {
+      bgMusic.play().then(() => {
+        isPlaying = true;
+        musicBtn.textContent = '🔊';
+      }).catch(err => {
+        console.log("Autoplay blocked. Awaiting user interaction...");
+        const playOnInteraction = () => {
+          if (!isPlaying) toggleMusic();
+          ['click', 'scroll', 'touchstart'].forEach(evt => document.body.removeEventListener(evt, playOnInteraction));
+        };
+        ['click', 'scroll', 'touchstart'].forEach(evt => {
+          document.body.addEventListener(evt, playOnInteraction, { once: true });
+        });
+      });
+    });
+  </script>
+
+  <script>
+    /**
+     * Iframe 元素高亮注入脚本
+     * 需要在目标网站中引入此脚本来支持跨域 iframe 高亮功能
+     *
+     * 使用方法：
+     * 1. 将此脚本添加到目标网站的 HTML 中
+     * 2. 或通过浏览器扩展、用户脚本等方式注入
+     */
+
+    (function () {
+      "use strict";
+
+      // 检查是否在 iframe 中
+      if (window.self === window.top) {
+        return; // 不在 iframe 中，不执行
+      }
+
+      // 检查是否已经初始化过
+      if (window.__iframeHighlightInitialized) {
+        return;
+      }
+      window.__iframeHighlightInitialized = true;
+      console.log("Iframe 高亮脚本已加载");
+
+      // 创建高亮覆盖层
+      var overlay = document.createElement("div");
+      overlay.id = "iframe-highlight-overlay";
+      overlay.style.cssText = "\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100vh;\n    pointer-events: none;\n    z-index: 999999;\n    overflow: hidden;\n  ";
+
+      // 创建悬停高亮框（虚线边框）
+      var highlightBox = document.createElement("div");
+      highlightBox.id = "iframe-highlight-box";
+      highlightBox.style.cssText = "\n    position: absolute;\n    border: 2px dashed #007AFF;\n    background: rgba(0, 122, 255, 0.08);\n    pointer-events: none;\n    display: none;\n    transition: all 0.1s ease;\n    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);\n    border-radius: 2px;\n  ";
+
+      // 创建选中节点的常驻高亮框（实线边框）
+      var selectedBox = document.createElement("div");
+      selectedBox.id = "iframe-selected-box";
+      selectedBox.style.cssText = "\n    position: absolute;\n    border: 2px solid #007AFF;\n    pointer-events: none;\n    display: none;\n    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 8px rgba(255, 107, 53, 0.4);\n    border-radius: 2px;\n    z-index: 1000000;\n  ";
+
+      // 创建悬停标签显示
+      var tagLabel = document.createElement("div");
+      tagLabel.id = "iframe-tag-label";
+      tagLabel.style.cssText = "\n    position: absolute;\n    background: #007AFF;\n    color: white;\n    padding: 2px 6px;\n    font-size: 11px;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n    border-radius: 2px;\n    pointer-events: none;\n    display: none;\n    white-space: nowrap;\n    z-index: 1000001;\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);\n    font-weight: 500;\n  ";
+
+      // 创建选中节点标签
+      var selectedLabel = document.createElement("div");
+      selectedLabel.id = "iframe-selected-label";
+      selectedLabel.style.cssText = "\n    position: absolute;\n    background: #007AFF;\n    color: white;\n    padding: 3px 8px;\n    font-size: 11px;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n    border-radius: 3px;\n    pointer-events: none;\n    display: none;\n    white-space: nowrap;\n    z-index: 1000002;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);\n    font-weight: 600;\n  ";
+      overlay.appendChild(highlightBox);
+      overlay.appendChild(selectedBox);
+      overlay.appendChild(tagLabel);
+      overlay.appendChild(selectedLabel);
+      document.body.appendChild(overlay);
+
+      // 存储当前选中的元素
+      var selectedElement = null;
+      var highlightEnabled = false;
+
+      // 更新选中元素的高亮显示
+      function updateSelectedHighlight(element) {
+        console.log("updateSelectedHighlight called with:", element);
+        if (!element) {
+          selectedBox.style.display = "none";
+          selectedLabel.style.display = "none";
+          selectedElement = null;
+          console.log("Cleared selected highlight");
+          return;
+        }
+        selectedElement = element;
+        var rect = element.getBoundingClientRect();
+        console.log("Selected element rect:", rect);
+
+        // 更新选中高亮框位置
+        selectedBox.style.display = "block";
+        selectedBox.style.left = "".concat(rect.left - 2, "px");
+        selectedBox.style.top = "".concat(rect.top - 2, "px");
+        selectedBox.style.width = "".concat(rect.width + 4, "px");
+        selectedBox.style.height = "".concat(rect.height + 4, "px");
+
+        // 更新选中标签位置和内容
+        selectedLabel.style.display = "block";
+        selectedLabel.textContent = "\u2713 <".concat(element.tagName.toLowerCase(), ">");
+
+        // 计算标签位置，确保不超出视窗
+        var labelTop = rect.top - 28;
+        var labelLeft = rect.left;
+
+        // 如果标签会超出顶部，显示在元素下方
+        if (labelTop < 5) {
+          labelTop = rect.bottom + 5;
+        }
+
+        // 如果标签会超出右侧，向左调整
+        var labelWidth = selectedLabel.offsetWidth || 100; // 预估宽度
+        if (labelLeft + labelWidth > window.innerWidth - 10) {
+          labelLeft = window.innerWidth - labelWidth - 10;
+        }
+        selectedLabel.style.left = "".concat(Math.max(5, labelLeft), "px");
+        selectedLabel.style.top = "".concat(labelTop, "px");
+        console.log("Selected highlight positioned at:", {
+          left: selectedBox.style.left,
+          top: selectedBox.style.top,
+          width: selectedBox.style.width,
+          height: selectedBox.style.height
+        });
+      }
+      function getElementSelector(element) {
+        if (!(element instanceof Element)) throw new Error('Argument must be a DOM element');
+        var segments = [];
+        var current = element;
+        while (current !== document.documentElement) {
+          var selector = '';
+          // 优先检查唯一ID
+          if (current.id && document.querySelectorAll("#".concat(current.id)).length === 1) {
+            segments.unshift("#".concat(current.id));
+            break; // ID唯一，无需继续向上
+          }
+
+          // 生成类名选择器（取第一个有效类名）
+          var classes = Array.from(current.classList).filter(function (c) {
+            return !c.startsWith('js-');
+          });
+          var className = classes.length > 0 ? ".".concat(classes[0]) : '';
+
+          // 生成位置索引（nth-child）
+          var tag = current.tagName.toLowerCase();
+          if (!className) {
+            var siblings = Array.from(current.parentNode.children);
+            var index = siblings.findIndex(function (el) {
+              return el === current;
+            }) + 1;
+            selector = "".concat(tag, ":nth-child(").concat(index, ")");
+          } else {
+            selector = className;
+          }
+          segments.unshift(selector);
+          current = current.parentElement;
+        }
+
+        // 处理根元素
+        if (current === document.documentElement) {
+          segments.unshift('html');
+        }
+        return segments.join(' > ');
+      }
+
+      // 获取元素文本内容
+      function getElementText(element) {
+        var _element$textContent;
+        if (element.tagName === "INPUT") {
+          return element.value || element.placeholder || "";
+        }
+        if (element.tagName === "TEXTAREA") {
+          return element.value || element.placeholder || "";
+        }
+        var text = ((_element$textContent = element.textContent) === null || _element$textContent === void 0 ? void 0 : _element$textContent.trim()) || "";
+        return text.length > 50 ? text.substring(0, 50) + "..." : text;
+      }
+
+      // 获取元素属性信息
+      function getElementAttributes(element) {
+        var attrs = {};
+        for (var i = 0; i < element.attributes.length; i++) {
+          var attr = element.attributes[i];
+          attrs[attr.name] = attr.value;
+        }
+        return attrs;
+      }
+
+      // 鼠标悬停事件处理
+      function handleMouseOver(e) {
+        if (!highlightEnabled) return;
+        var target = e.target;
+        if (!target || target === overlay || target === highlightBox || target === tagLabel || target === selectedBox || target === selectedLabel) {
+          return;
+        }
+
+        // 避免高亮 html 和 body 元素
+        if (target === document.documentElement || target === document.body) {
+          return;
+        }
+
+        // 如果是已选中的元素，不显示悬停高亮
+        if (target === selectedElement) {
+          highlightBox.style.display = "none";
+          tagLabel.style.display = "none";
+          return;
+        }
+        var rect = target.getBoundingClientRect();
+        var selector = getElementSelector(target);
+        var text = getElementText(target);
+        var attributes = getElementAttributes(target);
+
+        // 更新悬停高亮框位置
+        highlightBox.style.display = "block";
+        highlightBox.style.left = "".concat(rect.left - 2, "px");
+        highlightBox.style.top = "".concat(rect.top - 2, "px");
+        highlightBox.style.width = "".concat(rect.width + 4, "px");
+        highlightBox.style.height = "".concat(rect.height + 4, "px");
+
+        // 更新标签位置和内容
+        tagLabel.style.display = "block";
+        tagLabel.textContent = "<".concat(target.tagName.toLowerCase(), ">");
+
+        // 计算标签位置，确保不超出视窗
+        var labelTop = rect.top - 22;
+        var labelLeft = rect.left;
+
+        // 如果标签会超出顶部，显示在元素下方
+        if (labelTop < 0) {
+          labelTop = rect.bottom + 5;
+        }
+
+        // 如果标签会超出右侧，向左调整
+        if (labelLeft + tagLabel.offsetWidth > window.innerWidth) {
+          labelLeft = window.innerWidth - tagLabel.offsetWidth - 5;
+        }
+        tagLabel.style.left = "".concat(Math.max(0, labelLeft), "px");
+        tagLabel.style.top = "".concat(labelTop, "px");
+
+        // 发送消息到父窗口
+        var elementInfo = {
+          tagName: target.tagName.toLowerCase(),
+          rect: {
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height,
+            x: rect.x,
+            y: rect.y
+          },
+          selector: selector,
+          text: text,
+          attributes: attributes,
+          url: window.location.href,
+          path: window.location.pathname,
+          timestamp: Date.now()
+        };
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-hover",
+            data: elementInfo,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 鼠标离开事件处理
+      function handleMouseOut(e) {
+        if (!highlightEnabled) return;
+        var relatedTarget = e.relatedTarget;
+
+        // 如果鼠标移动到高亮相关元素上，不隐藏高亮
+        if (relatedTarget && (relatedTarget === highlightBox || relatedTarget === tagLabel || relatedTarget === overlay || relatedTarget === selectedBox || relatedTarget === selectedLabel)) {
+          return;
+        }
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-hover",
+            data: null,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 点击事件处理
+      function handleClick(e) {
+        var target = e.target;
+        if (!target || target === overlay || target === highlightBox || target === tagLabel || target === selectedBox || target === selectedLabel) {
+          return;
+        }
+
+        // 避免处理 html 和 body 元素
+        if (target === document.documentElement || target === document.body) {
+          return;
+        }
+
+        // 检查是否是交互元素，这些元素需要保留默认行为
+        var isInteractiveElement = ['input', 'textarea', 'select', 'button', 'a'].includes(target.tagName.toLowerCase());
+
+        // 如果高亮功能启用，对于非交互元素阻止默认行为和事件传播
+        if (highlightEnabled) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        var rect = target.getBoundingClientRect();
+        var selector = getElementSelector(target);
+        var text = getElementText(target);
+        var attributes = getElementAttributes(target);
+        console.log("Element clicked:", {
+          tagName: target.tagName,
+          selector: selector,
+          rect: rect
+        });
+
+        // 立即更新选中高亮
+        updateSelectedHighlight(target);
+
+        // 隐藏悬停高亮，因为现在是选中状态
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        var elementInfo = {
+          tagName: target.tagName.toLowerCase(),
+          rect: {
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height,
+            x: rect.x,
+            y: rect.y
+          },
+          selector: selector,
+          text: text,
+          attributes: attributes,
+          url: window.location.href,
+          path: window.location.pathname,
+          timestamp: Date.now()
+        };
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-click",
+            data: elementInfo,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 监听来自父窗口的消息
+      function handleParentMessage(event) {
+        console.log("Received message from parent:", event.data);
+        if (event.data.type === "iframe-highlight-toggle") {
+          var enabled = event.data.enabled;
+          console.log("Highlight toggle:", enabled);
+          if (enabled) {
+            enableHighlight();
+          } else {
+            disableHighlight();
+          }
+        } else if (event.data.type === "enable-iframe-highlight") {
+          console.log("Enable iframe highlight");
+          enableHighlight();
+        } else if (event.data.type === "disable-iframe-highlight") {
+          console.log("Disable iframe highlight");
+          disableHighlight();
+        } else if (event.data.type === "toggle-iframe-highlight") {
+          var _enabled = event.data.enabled !== undefined ? event.data.enabled : !highlightEnabled;
+          console.log("Toggle iframe highlight to:", _enabled);
+          if (_enabled) {
+            enableHighlight();
+          } else {
+            disableHighlight();
+          }
+        } else if (event.data.type === "update-selected-element") {
+          var selector = event.data.selector;
+          console.log("Update selected element with selector:", selector);
+          if (selector) {
+            try {
+              var element = document.querySelector(selector);
+              console.log("Found element by selector:", element);
+              updateSelectedHighlight(element);
+            } catch (error) {
+              console.warn("Failed to select element:", error);
+              updateSelectedHighlight(null);
+            }
+          } else {
+            updateSelectedHighlight(null);
+          }
+        } else if (event.data.type === "clear-selected-element") {
+          console.log("Clear selected element");
+          updateSelectedHighlight(null);
+        }
+      }
+
+      // 启用高亮功能
+      function enableHighlight() {
+        console.log("Enabling highlight");
+        document.addEventListener("mouseover", handleMouseOver, true);
+        document.addEventListener("mouseout", handleMouseOut, true);
+        document.addEventListener("click", handleClick, true);
+        highlightEnabled = true;
+        overlay.style.display = "block";
+      }
+
+      // 禁用高亮功能
+      function disableHighlight() {
+        console.log("Disabling highlight");
+        highlightEnabled = false;
+        // 保持事件监听器，但通过 highlightEnabled 变量控制行为
+        // 这样可以保留选中状态的显示
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        // 不隐藏 selectedBox 和 selectedLabel，保留选中状态
+      }
+
+      // 完全禁用高亮功能（移除所有监听器）
+      function fullyDisableHighlight() {
+        console.log("Fully disabling highlight");
+        highlightEnabled = false;
+        document.removeEventListener("mouseover", handleMouseOver, true);
+        document.removeEventListener("mouseout", handleMouseOut, true);
+        document.removeEventListener("click", handleClick, true);
+        overlay.style.display = "none";
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        selectedBox.style.display = "none";
+        selectedLabel.style.display = "none";
+      }
+
+      // 添加事件监听
+      enableHighlight();
+      window.addEventListener("message", handleParentMessage);
+
+      // 暴露全局函数供外部调用
+      window.__iframeHighlightControl = {
+        enable: enableHighlight,
+        disable: disableHighlight,
+        fullyDisable: fullyDisableHighlight,
+        isEnabled: function isEnabled() {
+          return highlightEnabled;
+        },
+        getSelectedElement: function getSelectedElement() {
+          return selectedElement;
+        },
+        updateSelected: updateSelectedHighlight,
+        // 通过消息发送开关控制
+        sendToggleMessage: function sendToggleMessage(enabled) {
+          window.parent.postMessage({
+            type: 'iframe-highlight-status',
+            enabled: enabled || highlightEnabled,
+            source: 'iframe-highlight-injector'
+          }, '*');
+        }
+      };
+
+      // 通知父窗口脚本已加载
+      try {
+        window.parent.postMessage({
+          type: "iframe-highlight-ready",
+          data: {
+            url: window.location.href,
+            userAgent: navigator.userAgent,
+            timestamp: Date.now()
+          },
+          source: "iframe-highlight-injector"
+        }, "*");
+      } catch (error) {
+        console.warn("无法发送就绪消息到父窗口:", error);
+      }
+
+      // 清理函数
+      window.__iframeHighlightCleanup = function () {
+        fullyDisableHighlight();
+        window.removeEventListener("message", handleParentMessage);
+        if (overlay.parentElement) {
+          overlay.parentElement.removeChild(overlay);
+        }
+        delete window.__iframeHighlightInitialized;
+        delete window.__iframeHighlightCleanup;
+      };
+    })();
+
+  </script>
+
+  <script>
+    /**
+     * Iframe 元素高亮注入脚本
+     * 需要在目标网站中引入此脚本来支持跨域 iframe 高亮功能
+     *
+     * 使用方法：
+     * 1. 将此脚本添加到目标网站的 HTML 中
+     * 2. 或通过浏览器扩展、用户脚本等方式注入
+     */
+
+    (function () {
+      "use strict";
+
+      // 检查是否在 iframe 中
+      if (window.self === window.top) {
+        return; // 不在 iframe 中，不执行
+      }
+
+      // 检查是否已经初始化过
+      if (window.__iframeHighlightInitialized) {
+        return;
+      }
+      window.__iframeHighlightInitialized = true;
+      console.log("Iframe 高亮脚本已加载");
+
+      // 创建高亮覆盖层
+      var overlay = document.createElement("div");
+      overlay.id = "iframe-highlight-overlay";
+      overlay.style.cssText = "\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100vw;\n    height: 100vh;\n    pointer-events: none;\n    z-index: 999999;\n    overflow: hidden;\n  ";
+
+      // 创建悬停高亮框（虚线边框）
+      var highlightBox = document.createElement("div");
+      highlightBox.id = "iframe-highlight-box";
+      highlightBox.style.cssText = "\n    position: absolute;\n    border: 2px dashed #007AFF;\n    background: rgba(0, 122, 255, 0.08);\n    pointer-events: none;\n    display: none;\n    transition: all 0.1s ease;\n    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);\n    border-radius: 2px;\n  ";
+
+      // 创建选中节点的常驻高亮框（实线边框）
+      var selectedBox = document.createElement("div");
+      selectedBox.id = "iframe-selected-box";
+      selectedBox.style.cssText = "\n    position: absolute;\n    border: 2px solid #007AFF;\n    pointer-events: none;\n    display: none;\n    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9), 0 0 8px rgba(255, 107, 53, 0.4);\n    border-radius: 2px;\n    z-index: 1000000;\n  ";
+
+      // 创建悬停标签显示
+      var tagLabel = document.createElement("div");
+      tagLabel.id = "iframe-tag-label";
+      tagLabel.style.cssText = "\n    position: absolute;\n    background: #007AFF;\n    color: white;\n    padding: 2px 6px;\n    font-size: 11px;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n    border-radius: 2px;\n    pointer-events: none;\n    display: none;\n    white-space: nowrap;\n    z-index: 1000001;\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);\n    font-weight: 500;\n  ";
+
+      // 创建选中节点标签
+      var selectedLabel = document.createElement("div");
+      selectedLabel.id = "iframe-selected-label";
+      selectedLabel.style.cssText = "\n    position: absolute;\n    background: #007AFF;\n    color: white;\n    padding: 3px 8px;\n    font-size: 11px;\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n    border-radius: 3px;\n    pointer-events: none;\n    display: none;\n    white-space: nowrap;\n    z-index: 1000002;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);\n    font-weight: 600;\n  ";
+      overlay.appendChild(highlightBox);
+      overlay.appendChild(selectedBox);
+      overlay.appendChild(tagLabel);
+      overlay.appendChild(selectedLabel);
+      document.body.appendChild(overlay);
+
+      // 存储当前选中的元素
+      var selectedElement = null;
+      var highlightEnabled = false;
+
+      // 更新选中元素的高亮显示
+      function updateSelectedHighlight(element) {
+        console.log("updateSelectedHighlight called with:", element);
+        if (!element) {
+          selectedBox.style.display = "none";
+          selectedLabel.style.display = "none";
+          selectedElement = null;
+          console.log("Cleared selected highlight");
+          return;
+        }
+        selectedElement = element;
+        var rect = element.getBoundingClientRect();
+        console.log("Selected element rect:", rect);
+
+        // 更新选中高亮框位置
+        selectedBox.style.display = "block";
+        selectedBox.style.left = "".concat(rect.left - 2, "px");
+        selectedBox.style.top = "".concat(rect.top - 2, "px");
+        selectedBox.style.width = "".concat(rect.width + 4, "px");
+        selectedBox.style.height = "".concat(rect.height + 4, "px");
+
+        // 更新选中标签位置和内容
+        selectedLabel.style.display = "block";
+        selectedLabel.textContent = "\u2713 <".concat(element.tagName.toLowerCase(), ">");
+
+        // 计算标签位置，确保不超出视窗
+        var labelTop = rect.top - 28;
+        var labelLeft = rect.left;
+
+        // 如果标签会超出顶部，显示在元素下方
+        if (labelTop < 5) {
+          labelTop = rect.bottom + 5;
+        }
+
+        // 如果标签会超出右侧，向左调整
+        var labelWidth = selectedLabel.offsetWidth || 100; // 预估宽度
+        if (labelLeft + labelWidth > window.innerWidth - 10) {
+          labelLeft = window.innerWidth - labelWidth - 10;
+        }
+        selectedLabel.style.left = "".concat(Math.max(5, labelLeft), "px");
+        selectedLabel.style.top = "".concat(labelTop, "px");
+        console.log("Selected highlight positioned at:", {
+          left: selectedBox.style.left,
+          top: selectedBox.style.top,
+          width: selectedBox.style.width,
+          height: selectedBox.style.height
+        });
+      }
+      function getElementSelector(element) {
+        if (!(element instanceof Element)) throw new Error('Argument must be a DOM element');
+        var segments = [];
+        var current = element;
+        while (current !== document.documentElement) {
+          var selector = '';
+          // 优先检查唯一ID
+          if (current.id && document.querySelectorAll("#".concat(current.id)).length === 1) {
+            segments.unshift("#".concat(current.id));
+            break; // ID唯一，无需继续向上
+          }
+
+          // 生成类名选择器（取第一个有效类名）
+          var classes = Array.from(current.classList).filter(function (c) {
+            return !c.startsWith('js-');
+          });
+          var className = classes.length > 0 ? ".".concat(classes[0]) : '';
+
+          // 生成位置索引（nth-child）
+          var tag = current.tagName.toLowerCase();
+          if (!className) {
+            var siblings = Array.from(current.parentNode.children);
+            var index = siblings.findIndex(function (el) {
+              return el === current;
+            }) + 1;
+            selector = "".concat(tag, ":nth-child(").concat(index, ")");
+          } else {
+            selector = className;
+          }
+          segments.unshift(selector);
+          current = current.parentElement;
+        }
+
+        // 处理根元素
+        if (current === document.documentElement) {
+          segments.unshift('html');
+        }
+        return segments.join(' > ');
+      }
+
+      // 获取元素文本内容
+      function getElementText(element) {
+        var _element$textContent;
+        if (element.tagName === "INPUT") {
+          return element.value || element.placeholder || "";
+        }
+        if (element.tagName === "TEXTAREA") {
+          return element.value || element.placeholder || "";
+        }
+        var text = ((_element$textContent = element.textContent) === null || _element$textContent === void 0 ? void 0 : _element$textContent.trim()) || "";
+        return text.length > 50 ? text.substring(0, 50) + "..." : text;
+      }
+
+      // 获取元素属性信息
+      function getElementAttributes(element) {
+        var attrs = {};
+        for (var i = 0; i < element.attributes.length; i++) {
+          var attr = element.attributes[i];
+          attrs[attr.name] = attr.value;
+        }
+        return attrs;
+      }
+
+      // 鼠标悬停事件处理
+      function handleMouseOver(e) {
+        if (!highlightEnabled) return;
+        var target = e.target;
+        if (!target || target === overlay || target === highlightBox || target === tagLabel || target === selectedBox || target === selectedLabel) {
+          return;
+        }
+
+        // 避免高亮 html 和 body 元素
+        if (target === document.documentElement || target === document.body) {
+          return;
+        }
+
+        // 如果是已选中的元素，不显示悬停高亮
+        if (target === selectedElement) {
+          highlightBox.style.display = "none";
+          tagLabel.style.display = "none";
+          return;
+        }
+        var rect = target.getBoundingClientRect();
+        var selector = getElementSelector(target);
+        var text = getElementText(target);
+        var attributes = getElementAttributes(target);
+
+        // 更新悬停高亮框位置
+        highlightBox.style.display = "block";
+        highlightBox.style.left = "".concat(rect.left - 2, "px");
+        highlightBox.style.top = "".concat(rect.top - 2, "px");
+        highlightBox.style.width = "".concat(rect.width + 4, "px");
+        highlightBox.style.height = "".concat(rect.height + 4, "px");
+
+        // 更新标签位置和内容
+        tagLabel.style.display = "block";
+        tagLabel.textContent = "<".concat(target.tagName.toLowerCase(), ">");
+
+        // 计算标签位置，确保不超出视窗
+        var labelTop = rect.top - 22;
+        var labelLeft = rect.left;
+
+        // 如果标签会超出顶部，显示在元素下方
+        if (labelTop < 0) {
+          labelTop = rect.bottom + 5;
+        }
+
+        // 如果标签会超出右侧，向左调整
+        if (labelLeft + tagLabel.offsetWidth > window.innerWidth) {
+          labelLeft = window.innerWidth - tagLabel.offsetWidth - 5;
+        }
+        tagLabel.style.left = "".concat(Math.max(0, labelLeft), "px");
+        tagLabel.style.top = "".concat(labelTop, "px");
+
+        // 发送消息到父窗口
+        var elementInfo = {
+          tagName: target.tagName.toLowerCase(),
+          rect: {
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height,
+            x: rect.x,
+            y: rect.y
+          },
+          selector: selector,
+          text: text,
+          attributes: attributes,
+          url: window.location.href,
+          path: window.location.pathname,
+          timestamp: Date.now()
+        };
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-hover",
+            data: elementInfo,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 鼠标离开事件处理
+      function handleMouseOut(e) {
+        if (!highlightEnabled) return;
+        var relatedTarget = e.relatedTarget;
+
+        // 如果鼠标移动到高亮相关元素上，不隐藏高亮
+        if (relatedTarget && (relatedTarget === highlightBox || relatedTarget === tagLabel || relatedTarget === overlay || relatedTarget === selectedBox || relatedTarget === selectedLabel)) {
+          return;
+        }
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-hover",
+            data: null,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 点击事件处理
+      function handleClick(e) {
+        var target = e.target;
+        if (!target || target === overlay || target === highlightBox || target === tagLabel || target === selectedBox || target === selectedLabel) {
+          return;
+        }
+
+        // 避免处理 html 和 body 元素
+        if (target === document.documentElement || target === document.body) {
+          return;
+        }
+
+        // 检查是否是交互元素，这些元素需要保留默认行为
+        var isInteractiveElement = ['input', 'textarea', 'select', 'button', 'a'].includes(target.tagName.toLowerCase());
+
+        // 如果高亮功能启用，对于非交互元素阻止默认行为和事件传播
+        if (highlightEnabled) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        var rect = target.getBoundingClientRect();
+        var selector = getElementSelector(target);
+        var text = getElementText(target);
+        var attributes = getElementAttributes(target);
+        console.log("Element clicked:", {
+          tagName: target.tagName,
+          selector: selector,
+          rect: rect
+        });
+
+        // 立即更新选中高亮
+        updateSelectedHighlight(target);
+
+        // 隐藏悬停高亮，因为现在是选中状态
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        var elementInfo = {
+          tagName: target.tagName.toLowerCase(),
+          rect: {
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+            width: rect.width,
+            height: rect.height,
+            x: rect.x,
+            y: rect.y
+          },
+          selector: selector,
+          text: text,
+          attributes: attributes,
+          url: window.location.href,
+          path: window.location.pathname,
+          timestamp: Date.now()
+        };
+        try {
+          window.parent.postMessage({
+            type: "iframe-element-click",
+            data: elementInfo,
+            source: "iframe-highlight-injector"
+          }, "*");
+        } catch (error) {
+          console.warn("无法发送消息到父窗口:", error);
+        }
+      }
+
+      // 监听来自父窗口的消息
+      function handleParentMessage(event) {
+        console.log("Received message from parent:", event.data);
+        if (event.data.type === "iframe-highlight-toggle") {
+          var enabled = event.data.enabled;
+          console.log("Highlight toggle:", enabled);
+          if (enabled) {
+            enableHighlight();
+          } else {
+            disableHighlight();
+          }
+        } else if (event.data.type === "enable-iframe-highlight") {
+          console.log("Enable iframe highlight");
+          enableHighlight();
+        } else if (event.data.type === "disable-iframe-highlight") {
+          console.log("Disable iframe highlight");
+          disableHighlight();
+        } else if (event.data.type === "toggle-iframe-highlight") {
+          var _enabled = event.data.enabled !== undefined ? event.data.enabled : !highlightEnabled;
+          console.log("Toggle iframe highlight to:", _enabled);
+          if (_enabled) {
+            enableHighlight();
+          } else {
+            disableHighlight();
+          }
+        } else if (event.data.type === "update-selected-element") {
+          var selector = event.data.selector;
+          console.log("Update selected element with selector:", selector);
+          if (selector) {
+            try {
+              var element = document.querySelector(selector);
+              console.log("Found element by selector:", element);
+              updateSelectedHighlight(element);
+            } catch (error) {
+              console.warn("Failed to select element:", error);
+              updateSelectedHighlight(null);
+            }
+          } else {
+            updateSelectedHighlight(null);
+          }
+        } else if (event.data.type === "clear-selected-element") {
+          console.log("Clear selected element");
+          updateSelectedHighlight(null);
+        }
+      }
+
+      // 启用高亮功能
+      function enableHighlight() {
+        console.log("Enabling highlight");
+        document.addEventListener("mouseover", handleMouseOver, true);
+        document.addEventListener("mouseout", handleMouseOut, true);
+        document.addEventListener("click", handleClick, true);
+        highlightEnabled = true;
+        overlay.style.display = "block";
+      }
+
+      // 禁用高亮功能
+      function disableHighlight() {
+        console.log("Disabling highlight");
+        highlightEnabled = false;
+        // 保持事件监听器，但通过 highlightEnabled 变量控制行为
+        // 这样可以保留选中状态的显示
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        // 不隐藏 selectedBox 和 selectedLabel，保留选中状态
+      }
+
+      // 完全禁用高亮功能（移除所有监听器）
+      function fullyDisableHighlight() {
+        console.log("Fully disabling highlight");
+        highlightEnabled = false;
+        document.removeEventListener("mouseover", handleMouseOver, true);
+        document.removeEventListener("mouseout", handleMouseOut, true);
+        document.removeEventListener("click", handleClick, true);
+        overlay.style.display = "none";
+        highlightBox.style.display = "none";
+        tagLabel.style.display = "none";
+        selectedBox.style.display = "none";
+        selectedLabel.style.display = "none";
+      }
+
+      // 添加事件监听
+      enableHighlight();
+      window.addEventListener("message", handleParentMessage);
+
+      // 暴露全局函数供外部调用
+      window.__iframeHighlightControl = {
+        enable: enableHighlight,
+        disable: disableHighlight,
+        fullyDisable: fullyDisableHighlight,
+        isEnabled: function isEnabled() {
+          return highlightEnabled;
+        },
+        getSelectedElement: function getSelectedElement() {
+          return selectedElement;
+        },
+        updateSelected: updateSelectedHighlight,
+        // 通过消息发送开关控制
+        sendToggleMessage: function sendToggleMessage(enabled) {
+          window.parent.postMessage({
+            type: 'iframe-highlight-status',
+            enabled: enabled || highlightEnabled,
+            source: 'iframe-highlight-injector'
+          }, '*');
+        }
+      };
+
+      // 通知父窗口脚本已加载
+      try {
+        window.parent.postMessage({
+          type: "iframe-highlight-ready",
+          data: {
+            url: window.location.href,
+            userAgent: navigator.userAgent,
+            timestamp: Date.now()
+          },
+          source: "iframe-highlight-injector"
+        }, "*");
+      } catch (error) {
+        console.warn("无法发送就绪消息到父窗口:", error);
+      }
+
+      // 清理函数
+      window.__iframeHighlightCleanup = function () {
+        fullyDisableHighlight();
+        window.removeEventListener("message", handleParentMessage);
+        if (overlay.parentElement) {
+          overlay.parentElement.removeChild(overlay);
+        }
+        delete window.__iframeHighlightInitialized;
+        delete window.__iframeHighlightCleanup;
+      };
+    })();
+  </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+      mirror: false,
+      anchorPlacement: 'top-bottom'
+    });
+
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progress = document.getElementById('reading-progress');
+      if (progress) progress.style.width = scrolled + '%';
+
+      const nav = document.querySelector('.floating-nav');
+      if (nav) {
+        if (winScroll > 50) {
+          nav.classList.add('scrolled');
+        } else {
+          nav.classList.remove('scrolled');
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

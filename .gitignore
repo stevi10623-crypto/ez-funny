@@ -1,0 +1,4 @@
+remove_bg.py
+.tmp/
+node_modules/
+.env
