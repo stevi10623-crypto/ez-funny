@@ -236,7 +236,7 @@
       }
 
       100% {
-        transform: translateX(calc(100% + 200px)) scaleX(-1);
+        transform: translateX(calc(100vw + 200px)) scaleX(-1);
       }
     }
 
@@ -246,7 +246,7 @@
       }
 
       100% {
-        transform: translateX(calc(100% + 200px)) scaleX(-1);
+        transform: translateX(calc(100vw + 200px)) scaleX(-1);
       }
     }
 
@@ -994,7 +994,15 @@
       }
 
       .gallery-item {
-        height: 250px;
+        height: auto;
+        min-height: 200px;
+        max-height: 350px;
+      }
+
+      .gallery-item img {
+        object-fit: contain;
+        height: auto;
+        max-height: 350px;
       }
 
       .case-content p {
