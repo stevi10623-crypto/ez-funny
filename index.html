@@ -1446,6 +1446,10 @@
         <img src="images/eric-shevin.jpg" alt="Eric Shevin Sign">
         <p class="overlay-text">The Name on the Door</p>
       </div>
+      <div class="gallery-item">
+        <img src="images/new 1.jpg" alt="Eric Shevin">
+        <p class="overlay-text">Main Character Energy</p>
+      </div>
     </div>
   </section>
 
@@ -1648,7 +1652,6 @@
       var musicPrompt = document.getElementById('music-prompt');
       var isPlaying = false;
       var audioUnlocked = false;
-      var webAudioCtx = null;
 
       var playlist = [
         'images/audio/bg_music_2.mp3',
@@ -1658,60 +1661,89 @@
       var currentTrack = 0;
 
       bgMusic.volume = 0.25;
+      bgMusic.loop = false;
 
-      function loadTrack(idx) {
+      // ---- TRACK LOADING ----
+      function loadAndPlay(idx) {
         bgMusic.src = playlist[idx];
         bgMusic.load();
+        // Wait for the audio to be ready, then play
+        bgMusic.oncanplay = function () {
+          bgMusic.oncanplay = null; // one-shot
+          var p = bgMusic.play();
+          if (p && p.then) {
+            p.then(function () {
+              isPlaying = true;
+              musicBtn.textContent = '\uD83D\uDD0A';
+            }).catch(function (err) {
+              console.log('Next track play failed, retrying...', err);
+              // Retry once after a short delay (helps on some Android browsers)
+              setTimeout(function () {
+                bgMusic.play().catch(function () { });
+              }, 300);
+            });
+          }
+        };
       }
 
-      // When song ends, play next
+      // ---- SONG ENDED → NEXT TRACK ----
+      // This fires even on mobile because audio session is already active
       bgMusic.addEventListener('ended', function () {
         currentTrack = (currentTrack + 1) % playlist.length;
-        loadTrack(currentTrack);
-        bgMusic.play().catch(function () { });
+        console.log('Song ended. Next track:', currentTrack, playlist[currentTrack]);
+        loadAndPlay(currentTrack);
       });
 
-      // iOS Web Audio API unlock trick
+      // Also use timeupdate as a fallback — some mobile browsers
+      // don't fire 'ended' reliably
+      bgMusic.addEventListener('timeupdate', function () {
+        if (bgMusic.duration && bgMusic.currentTime >= bgMusic.duration - 0.3 && !bgMusic._switching) {
+          bgMusic._switching = true;
+          // The ended event should fire, but if it doesn't within 2s, force it
+          setTimeout(function () {
+            if (bgMusic._switching) {
+              bgMusic._switching = false;
+              currentTrack = (currentTrack + 1) % playlist.length;
+              console.log('Fallback next track:', currentTrack);
+              loadAndPlay(currentTrack);
+            }
+          }, 2000);
+        }
+      });
+
+      // Reset the switching guard when ended fires normally
+      bgMusic.addEventListener('ended', function () {
+        bgMusic._switching = false;
+      });
+
+      // ---- iOS AUDIO UNLOCK ----
       function unlockAudio() {
         if (audioUnlocked) return;
         try {
           var AudioContext = window.AudioContext || window.webkitAudioContext;
           if (AudioContext) {
-            webAudioCtx = new AudioContext();
-            var buffer = webAudioCtx.createBuffer(1, 1, 22050);
-            var source = webAudioCtx.createBufferSource();
+            var ctx = new AudioContext();
+            var buffer = ctx.createBuffer(1, 1, 22050);
+            var source = ctx.createBufferSource();
             source.buffer = buffer;
-            source.connect(webAudioCtx.destination);
+            source.connect(ctx.destination);
             source.start(0);
-            if (webAudioCtx.state === 'suspended') {
-              webAudioCtx.resume();
-            }
+            if (ctx.state === 'suspended') ctx.resume();
           }
         } catch (e) { }
         audioUnlocked = true;
       }
 
-      // Actually start playing music
+      // ---- START MUSIC ----
       function startMusic() {
         unlockAudio();
-        loadTrack(currentTrack);
-        var p = bgMusic.play();
-        if (p && p.then) {
-          p.then(function () {
-            isPlaying = true;
-            musicBtn.textContent = '\uD83D\uDD0A';
-            hidePrompt();
-          }).catch(function (err) {
-            console.log('Play failed:', err);
-          });
-        }
+        loadAndPlay(currentTrack);
       }
 
       function hidePrompt() {
         if (musicPrompt) musicPrompt.style.display = 'none';
       }
 
-      // Show prompt on mobile
       function showPromptIfMobile() {
         if ('ontouchstart' in window && musicPrompt) {
           musicPrompt.style.display = 'block';
@@ -1719,8 +1751,8 @@
         }
       }
 
-      // Music button - direct click/tap handler
-      musicBtn.addEventListener('click', function () {
+      // ---- MUSIC BUTTON ----
+      function toggleMusic() {
         if (!isPlaying) {
           startMusic();
         } else {
@@ -1728,36 +1760,30 @@
           isPlaying = false;
           musicBtn.textContent = '\uD83D\uDD07';
         }
-      });
+      }
 
-      // Also listen for touchend on the button (iOS needs this)
+      musicBtn.addEventListener('click', toggleMusic);
       musicBtn.addEventListener('touchend', function (e) {
         e.preventDefault();
-        if (!isPlaying) {
-          startMusic();
-        } else {
-          bgMusic.pause();
-          isPlaying = false;
-          musicBtn.textContent = '\uD83D\uDD07';
-        }
+        toggleMusic();
       });
 
-      // On first interaction ANYWHERE - unlock + play
+      // ---- FIRST INTERACTION → AUTO PLAY ----
       var firstInteractionDone = false;
       function onFirstTouch() {
         if (firstInteractionDone) return;
         firstInteractionDone = true;
         startMusic();
+        hidePrompt();
         document.removeEventListener('touchend', onFirstTouch, true);
         document.removeEventListener('click', onFirstTouch, true);
       }
-
-      // Use capture phase, non-passive for maximum compatibility
       document.addEventListener('touchend', onFirstTouch, true);
       document.addEventListener('click', onFirstTouch, true);
 
-      // Try autoplay (desktop only, will fail silently on mobile)
-      loadTrack(currentTrack);
+      // ---- DESKTOP AUTOPLAY ATTEMPT ----
+      bgMusic.src = playlist[currentTrack];
+      bgMusic.load();
       var autoP = bgMusic.play();
       if (autoP && autoP.then) {
         autoP.then(function () {
