@@ -228,21 +228,21 @@
 
     @keyframes drivePorsche {
       0% {
-        transform: translateX(-200px);
+        transform: translateX(-200px) scaleX(-1);
       }
 
       100% {
-        transform: translateX(calc(100vw + 200px));
+        transform: translateX(calc(100vw + 200px)) scaleX(-1);
       }
     }
 
     @keyframes driveTesla {
       0% {
-        transform: translateX(-200px);
+        transform: translateX(-200px) scaleX(-1);
       }
 
       100% {
-        transform: translateX(calc(100vw + 200px));
+        transform: translateX(calc(100vw + 200px)) scaleX(-1);
       }
     }
 
@@ -908,10 +908,11 @@
       }
 
       #music-btn {
-        top: auto;
-        bottom: 30px;
+        top: 25px;
         left: 20px;
         right: auto;
+        bottom: auto;
+        z-index: 20001;
         width: 45px;
         height: 45px;
         font-size: 1.2rem;
