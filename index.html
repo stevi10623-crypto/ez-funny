@@ -1127,7 +1127,7 @@
   </div>
 
   <!-- Background Music -->
-  <audio id="bg-music" loop autoplay>
+  <audio id="bg-music" autoplay>
     <source src="images/audio/bg_music.mp3" type="audio/mpeg">
   </audio>
 
@@ -1481,13 +1481,34 @@
       }, 3000);
     });
 
-    // Background Music Logic
+    // Background Music Playlist Logic
     const musicBtn = document.getElementById('music-btn');
     const bgMusic = document.getElementById('bg-music');
     let isPlaying = false;
 
-    // Set volume low
+    // Playlist - 3 songs in rotation
+    const playlist = [
+      'images/audio/bg_music.mp3',
+      'images/audio/bg_music_2.mp3',
+      'images/audio/bg_music_3.mp3'
+    ];
+    let currentTrack = 0;
+
+    // Set volume
     bgMusic.volume = 0.2;
+
+    // Load a track by index
+    const loadTrack = (index) => {
+      bgMusic.src = playlist[index];
+      bgMusic.load();
+    };
+
+    // When a song ends, play the next one
+    bgMusic.addEventListener('ended', () => {
+      currentTrack = (currentTrack + 1) % playlist.length;
+      loadTrack(currentTrack);
+      bgMusic.play().catch(err => console.log('Next track error:', err));
+    });
 
     const toggleMusic = () => {
       if (isPlaying) {
@@ -1505,19 +1526,18 @@
 
     // Attempt autoplay, and if the browser blocks it, wait for first interaction
     const startMusic = () => {
+      loadTrack(currentTrack);
       bgMusic.play().then(() => {
         isPlaying = true;
         musicBtn.textContent = '🔊';
-        // Remove interaction listeners once successful
         ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, startMusic));
       }).catch(err => {
-        console.log("Autoplay blocked/failed. Awaiting user interaction...");
+        console.log("Autoplay blocked. Awaiting user interaction...");
       });
     };
 
     window.addEventListener('DOMContentLoaded', () => {
       startMusic();
-      // Add interaction listeners as fallback
       ['click', 'touchstart', 'scroll'].forEach(evt => {
         document.addEventListener(evt, startMusic, { once: true });
       });
