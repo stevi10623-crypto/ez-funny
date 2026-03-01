@@ -908,14 +908,14 @@
       }
 
       #music-btn {
-        top: 25px;
-        left: 20px;
-        right: auto;
-        bottom: auto;
+        top: auto;
+        left: auto;
+        right: 15px;
+        bottom: 80px;
         z-index: 20001;
-        width: 45px;
-        height: 45px;
-        font-size: 1.2rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
       }
 
       .form-container {
@@ -1127,13 +1127,11 @@
   </div>
 
   <!-- Background Music -->
-  <audio id="bg-music" autoplay>
-    <source src="images/audio/bg_music.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="bg-music" preload="auto"></audio>
 
   <!-- Background Music Controls -->
-  <button id="music-btn">
-    🔊
+  <button id="music-btn" aria-label="Toggle Music">
+    �
   </button>
 
   <!-- Floating Leaves -->
@@ -1481,67 +1479,93 @@
       }, 3000);
     });
 
-    // Background Music Playlist Logic
-    const musicBtn = document.getElementById('music-btn');
-    const bgMusic = document.getElementById('bg-music');
-    let isPlaying = false;
+    // ========== BACKGROUND MUSIC PLAYLIST ==========
+    (function () {
+      const musicBtn = document.getElementById('music-btn');
+      const bgMusic = document.getElementById('bg-music');
+      let isPlaying = false;
+      let hasStarted = false;
 
-    // Playlist - 3 songs in rotation
-    const playlist = [
-      'images/audio/bg_music.mp3',
-      'images/audio/bg_music_2.mp3',
-      'images/audio/bg_music_3.mp3'
-    ];
-    let currentTrack = 0;
+      // Playlist
+      const playlist = [
+        'images/audio/bg_music.mp3',
+        'images/audio/bg_music_2.mp3',
+        'images/audio/bg_music_3.mp3'
+      ];
+      let currentTrack = 0;
 
-    // Set volume
-    bgMusic.volume = 0.2;
+      // Set volume
+      bgMusic.volume = 0.25;
 
-    // Load a track by index
-    const loadTrack = (index) => {
-      bgMusic.src = playlist[index];
-      bgMusic.load();
-    };
-
-    // When a song ends, play the next one
-    bgMusic.addEventListener('ended', () => {
-      currentTrack = (currentTrack + 1) % playlist.length;
-      loadTrack(currentTrack);
-      bgMusic.play().catch(err => console.log('Next track error:', err));
-    });
-
-    const toggleMusic = () => {
-      if (isPlaying) {
-        bgMusic.pause();
-        musicBtn.textContent = '🔇';
-      } else {
-        bgMusic.play().then(() => {
-          musicBtn.textContent = '🔊';
-        }).catch(err => console.log('Audio error:', err));
+      // Load track
+      function loadTrack(index) {
+        bgMusic.src = playlist[index];
+        bgMusic.load();
       }
-      isPlaying = !isPlaying;
-    };
 
-    musicBtn.addEventListener('click', toggleMusic);
+      // When a song ends, advance to next
+      bgMusic.addEventListener('ended', function () {
+        currentTrack = (currentTrack + 1) % playlist.length;
+        loadTrack(currentTrack);
+        bgMusic.play().catch(function () { });
+      });
 
-    // Attempt autoplay, and if the browser blocks it, wait for first interaction
-    const startMusic = () => {
+      // Start playback (called from user gesture)
+      function startPlayback() {
+        if (hasStarted) return;
+        hasStarted = true;
+        loadTrack(currentTrack);
+        bgMusic.play().then(function () {
+          isPlaying = true;
+          musicBtn.textContent = '🔊';
+        }).catch(function (err) {
+          console.log('Play failed:', err);
+          hasStarted = false; // allow retry
+        });
+      }
+
+      // Toggle music on/off
+      musicBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (!hasStarted) {
+          startPlayback();
+          return;
+        }
+        if (isPlaying) {
+          bgMusic.pause();
+          isPlaying = false;
+          musicBtn.textContent = '🔇';
+        } else {
+          bgMusic.play().then(function () {
+            isPlaying = true;
+            musicBtn.textContent = '🔊';
+          }).catch(function () { });
+        }
+      });
+
+      // On first user interaction anywhere, start the music
+      function onFirstInteraction() {
+        startPlayback();
+        document.removeEventListener('click', onFirstInteraction);
+        document.removeEventListener('touchstart', onFirstInteraction);
+        document.removeEventListener('touchend', onFirstInteraction);
+      }
+
+      document.addEventListener('click', onFirstInteraction, { passive: true });
+      document.addEventListener('touchstart', onFirstInteraction, { passive: true });
+      document.addEventListener('touchend', onFirstInteraction, { passive: true });
+
+      // Also try autoplay immediately (works on desktop)
       loadTrack(currentTrack);
-      bgMusic.play().then(() => {
+      bgMusic.play().then(function () {
         isPlaying = true;
+        hasStarted = true;
         musicBtn.textContent = '🔊';
-        ['click', 'touchstart', 'scroll'].forEach(evt => document.removeEventListener(evt, startMusic));
-      }).catch(err => {
-        console.log("Autoplay blocked. Awaiting user interaction...");
+      }).catch(function () {
+        // Autoplay blocked — that's fine, first touch/click will start it
+        musicBtn.textContent = '🔇';
       });
-    };
-
-    window.addEventListener('DOMContentLoaded', () => {
-      startMusic();
-      ['click', 'touchstart', 'scroll'].forEach(evt => {
-        document.addEventListener(evt, startMusic, { once: true });
-      });
-    });
+    })();
   </script>
 
   <script>
